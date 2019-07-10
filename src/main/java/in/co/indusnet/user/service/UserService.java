@@ -1,8 +1,11 @@
 package in.co.indusnet.user.service;
 
-import in.co.indusnet.user.model.UserModal;
+import org.springframework.stereotype.Service;
 
+import in.co.indusnet.user.dto.UserRegisterDto;
+
+@Service
 public interface UserService {
 	
-	public void saveData(UserModal user);
+	public void saveData(UserRegisterDto user);
 }

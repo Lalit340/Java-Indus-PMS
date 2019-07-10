@@ -10,9 +10,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+
 @Entity
 @Table(name = "indus")
-public class UserModal {
+public class UserModel {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +35,7 @@ public class UserModal {
 	
 	@Column(name = "MobNumber")
 	@NotNull(message = "please provide a valid number")
+	@Pattern(regexp = "[0-9]{10}" , message = "provide valid mobile number")
 	private String mobileNo;
 
 	@Column(name = "Password")
@@ -41,14 +43,14 @@ public class UserModal {
 	private String password;
 
 	
-	public UserModal() {
+	public UserModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
 	
-	public UserModal(int id, @NotNull String name, @NotNull String desg, @NotNull String mail, @NotNull String mobileNo,
+	public UserModel(int id, @NotNull String name, @NotNull String desg, @NotNull String mail, @NotNull String mobileNo,
 			@NotNull String password) {
 		super();
 		this.id = id;
