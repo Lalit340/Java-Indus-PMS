@@ -6,18 +6,18 @@ public class RegisterException extends RuntimeException{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int errorCode;
+	private int statusCode;
 	
 	public RegisterException(String message , int errorCode) {
 		super(message);
-		this.errorCode=errorCode;
+		this.statusCode=errorCode;
 	}
 
-	public int getErrorCode() {
-		return errorCode;
+	public int getStatusCode() {
+		return statusCode;
 	}
 
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
+	public void setStatusCode(int errorCode) {
+		this.statusCode = errorCode;
 	}
 }

@@ -1,18 +1,18 @@
 package in.co.indusnet.response;
 
-import org.springframework.stereotype.Component;
-
 import lombok.Getter;
 import lombok.Setter;
 
-@Component
 @Setter
 @Getter
-public class Response {
-
-	private String statusMessage;
+public class ResponseWithToken {
+	
+	private String message;
 	
 	private int statusCode;
-
+	
+	private String token;
+	
+	private String username;
 
 }
