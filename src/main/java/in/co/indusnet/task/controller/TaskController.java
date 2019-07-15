@@ -1,4 +1,4 @@
-package in.co.indusnet.project.controller;
+package in.co.indusnet.task.controller;
 
 import java.util.List;
 
@@ -21,50 +21,45 @@ import in.co.indusnet.project.dto.ProjectDto;
 import in.co.indusnet.project.model.ProjectModel;
 import in.co.indusnet.project.service.ProjectServiceImplementation;
 import in.co.indusnet.response.Response;
+import in.co.indusnet.task.dto.TaskDto;
+import in.co.indusnet.task.model.TaskModel;
+import in.co.indusnet.task.service.TaskServiceImplementation;
 
 @RestController
-@RequestMapping("/Projects")
-public class ProjectController {
+@RequestMapping("/Task")
+public class TaskController {
 
 	@Autowired
-	private ProjectServiceImplementation service;
+	private TaskServiceImplementation service;
 
 	@PostMapping("/create")
-	public ResponseEntity<Response> create(@Valid @RequestBody ProjectDto dto) {
-		Response response = service.asignProj(dto);
+	public ResponseEntity<Response> create(@Valid @RequestBody TaskDto dto) {
+		Response response = service.asignTask(dto);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
-	@GetMapping("/getallprojs")
-	public List<ProjectModel> getProj() {
-		List<ProjectModel> data = service.getData();
+	@GetMapping("/getalltasks")
+	public List<TaskModel> getTask() {
+		List<TaskModel> data = service.getData();
 		return data;
 	}
 
-	@DeleteMapping("/deleteProj/{id}")
-	public ResponseEntity<Response> deleteProject(@PathVariable int id) {
+	@DeleteMapping("/deletetask/{id}")
+	public ResponseEntity<Response> deleteTask(@PathVariable int id) {
 		Response response = service.delete(id);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-	
-	@DeleteMapping("/removeProj")
-	public ResponseEntity<Response> removeProject(@RequestParam int pid ,@RequestParam int eid) {
-		Response response = service.remove(pid , eid);
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
-	}
-
-
-	@PutMapping("/updateProj/{id}")
-	public ResponseEntity<Response> updateProject(@Valid @RequestBody ProjectDto dto, @PathVariable int id) {
+	@PutMapping("/updatetask/{id}")
+	public ResponseEntity<Response> updateTask(@Valid @RequestBody TaskDto dto, @PathVariable int id) {
 		Response response = service.update(dto, id);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-	@PutMapping("/asignProj")
-	public ResponseEntity<Response> addProject( @RequestParam int pid , @RequestParam int eid) {
-		Response response = service.add(pid, eid);
+	@PutMapping("/asigntask")
+	public ResponseEntity<Response> addTask( @RequestParam int pid , @RequestParam int tid) {
+		Response response = service.add(pid, tid);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}

@@ -24,7 +24,7 @@ public class ProjectServiceImplementation implements ProjectService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -50,10 +50,23 @@ public class ProjectServiceImplementation implements ProjectService {
 	}
 
 	@Override
-	public Response delete(int id) {
-		repository.deleteById(id);
-		Response response = ResponseHelper.responseSender("Succefully project Delete", 200);
-		return response;
+	public Response remove(int pid, int eid) {
+		Optional<ProjectModel> model = repository.findById(pid);
+		if (!model.isPresent()) {
+			throw new InternalException("No Projects are present ", 401);
+		}
+		Optional<UserModel> userModel = userRepository.findById(eid);
+		if (!userModel.isPresent()) {
+			throw new InternalException("No UserData are present ", 402);
+		}
+		if (model.get().getUserModel().remove(userModel.get())) {
+			repository.save(model.get());
+			Response response = ResponseHelper.responseSender("Succefully user Deleted", 200);
+			return response;
+		} else {
+			Response response = ResponseHelper.responseSender("user not Deleted from project ", 403);
+			return response;
+		}
 	}
 
 	@Override
@@ -78,19 +91,26 @@ public class ProjectServiceImplementation implements ProjectService {
 		if (!projectModel.isPresent()) {
 			throw new InternalException("Project data Not Updated ", 401);
 		}
-		
+
 		Optional<UserModel> userModel = userRepository.findById(eid);
 		if (!userModel.isPresent()) {
 			throw new InternalException("Project data Not Updated ", 401);
 		}
-		
+
 		projectModel.get().getUserModel().add(userModel.get());
 		ProjectModel responseModel = repository.save(projectModel.get());
-		
+
 		if (responseModel == null) {
 			throw new InternalException("Project data Not Updated because Of Some Internal problem", 402);
 		}
 		Response response = ResponseHelper.responseSender("Succefully project Updated", 200);
+		return response;
+	}
+
+	@Override
+	public Response delete(int id) {
+		repository.deleteById(id);
+		Response response = ResponseHelper.responseSender("Succefully project Delete", 200);
 		return response;
 	}
 }
