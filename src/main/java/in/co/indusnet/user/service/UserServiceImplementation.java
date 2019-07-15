@@ -1,24 +1,28 @@
 package in.co.indusnet.user.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
-
-import javax.security.auth.login.LoginException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import in.co.indusnet.exception.InternalException;
 import in.co.indusnet.exception.PasswordException;
 import in.co.indusnet.exception.RegisterException;
+import in.co.indusnet.exception.TokenGenerateException;
 import in.co.indusnet.response.Response;
+import in.co.indusnet.response.ResponseWithToken;
 import in.co.indusnet.user.dto.UserLoginDto;
 import in.co.indusnet.user.dto.UserPassword;
 import in.co.indusnet.user.dto.UserRegisterDto;
+import in.co.indusnet.user.dto.UserUpdateDto;
 import in.co.indusnet.user.model.UserModel;
 import in.co.indusnet.user.repository.UserRepository;
 import in.co.indusnet.utility.ResponseHelper;
+import in.co.indusnet.utility.UserTokenGenerate;
 
 @Service("userService")
 public class UserServiceImplementation implements UserService {
@@ -31,6 +35,9 @@ public class UserServiceImplementation implements UserService {
 
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private UserTokenGenerate tokenGenerate;
 
 	public Response saveData(UserRegisterDto user) {
 		Response response = null;
@@ -51,26 +58,30 @@ public class UserServiceImplementation implements UserService {
 	}// saveData
 
 	@Override
-	public Response loginUser(UserLoginDto log) {
+	public ResponseWithToken loginUser(UserLoginDto log) {
 
 		Optional<UserModel> validate = null;
-		Response response = null;
-
+		ResponseWithToken response = null;
 		validate = repository.findByMail(log.getMail());
 
 		if (validate.isPresent()) {
 			if (password.matches(log.getPassword(), validate.get().getPassword())) {
+				String generateToken = tokenGenerate.generateToken(validate.get().getId());
 				if (validate.get().getDesg().equals("Developer")) {
-					response = ResponseHelper.responseSender("User Login Successful ", 201);
+					response = ResponseHelper.responseTokenSender("User Login Successful ", 201, generateToken,
+							validate.get().getName());
 					return response;
 				} else if (validate.get().getDesg().equals("Team Leader")) {
-					response = ResponseHelper.responseSender("User Login Successful ", 202);
+					response = ResponseHelper.responseTokenSender("User Login Successful ", 202, generateToken,
+							validate.get().getName());
 					return response;
 				} else if (validate.get().getDesg().equals("Project Manager")) {
-					response = ResponseHelper.responseSender("User Login Successful ", 203);
+					response = ResponseHelper.responseTokenSender("User Login Successful ", 203, generateToken,
+							validate.get().getName());
 					return response;
 				} else if (validate.get().getDesg().equals("Designer")) {
-					response = ResponseHelper.responseSender("User Login Successful ", 204);
+					response = ResponseHelper.responseTokenSender("User Login Successful ", 204, generateToken,
+							validate.get().getName());
 					return response;
 				} else {
 					throw new in.co.indusnet.exception.LoginException("designation not matched", 400);
@@ -88,7 +99,13 @@ public class UserServiceImplementation implements UserService {
 	public Response resetPassword(UserPassword password, String token) {
 		Optional<UserModel> validate = null;
 		Response response = null;
-		validate = repository.findByMail(token);
+
+		try {
+			long id = tokenGenerate.varifyToken(token);
+			validate = repository.findById((int) id);
+		} catch (UnsupportedEncodingException e) {
+			throw new TokenGenerateException("Invalid Token", 420);
+		}
 
 		if (password.getPassword().equals(password.getConformPassword())) {
 			validate.get().setPassword(this.password.encode(password.getPassword()));
@@ -104,11 +121,37 @@ public class UserServiceImplementation implements UserService {
 	public List<UserModel> findAll() {
 		List<UserModel> model = null;
 		model = repository.findAll();
-		if(model != null) {
+		if (model != null) {
 			return model;
-		}else
+		} else
 			throw new RegisterException("Data not found", 412);
-		
-	}//findAll
+
+	}// findAll
+
+	@Override
+	public Response delete(int id) {
+		repository.deleteById(id);
+		Response response = ResponseHelper.responseSender(" Deleted Successfully ", 200);
+		return response;
+	}
+
+	@Override
+	public Response update(UserUpdateDto user, int id) {
+		Optional<UserModel> model = repository.findById(id);
+		if (!model.isPresent()) {
+			throw new InternalException("Data not Updated", 401);
+		}
+
+		model.get().setDesg(user.getDesg());
+		model.get().setMobileNo(user.getMobileNo());
+		model.get().setName(user.getName());
+
+		UserModel responseData = repository.save(model.get());
+		if (responseData == null) {
+			throw new InternalException("Data not Updated because some internal problem", 402);
+		}
+		Response response = ResponseHelper.responseSender(" Update Successfully ", 200);
+		return response;
+	}
 
 }// class
