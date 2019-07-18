@@ -23,7 +23,7 @@ import in.co.indusnet.project.service.ProjectServiceImplementation;
 import in.co.indusnet.response.Response;
 
 @RestController
-@RequestMapping("/Projects")
+@RequestMapping("/indusnet")
 public class ProjectController {
 
 	@Autowired

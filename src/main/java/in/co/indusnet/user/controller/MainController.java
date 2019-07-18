@@ -58,14 +58,14 @@ public class MainController {
 		return model;
 	}
 
-	@DeleteMapping("/deleteProj/{id}")
+	@DeleteMapping("/deleteUser/{id}")
 	public ResponseEntity<Response> deleteProject(@PathVariable int id) {
 		Response response = service.delete(id);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
 
-	@PutMapping("/updateProj/{id}")
+	@PutMapping("/updateUser/{id}")
 	public ResponseEntity<Response> updateProject(@Valid @RequestBody UserUpdateDto dto, @PathVariable int id) {
 		Response response = service.update(dto, id);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);

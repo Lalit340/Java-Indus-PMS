@@ -26,13 +26,13 @@ import in.co.indusnet.task.model.TaskModel;
 import in.co.indusnet.task.service.TaskServiceImplementation;
 
 @RestController
-@RequestMapping("/Task")
+@RequestMapping("/indusnet")
 public class TaskController {
 
 	@Autowired
 	private TaskServiceImplementation service;
 
-	@PostMapping("/create")
+	@PostMapping("/createtask")
 	public ResponseEntity<Response> create(@Valid @RequestBody TaskDto dto) {
 		Response response = service.asignTask(dto);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
