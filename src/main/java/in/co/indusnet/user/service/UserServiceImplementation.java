@@ -40,6 +40,7 @@ public class UserServiceImplementation implements UserService {
 	private UserTokenGenerate tokenGenerate;
 
 	public Response saveData(UserRegisterDto user) {
+		System.out.println("object :"+user.getMail() +" "+user.getMobileNo()+"  "+user.getDesg()+"  "+user.getName()+"  "+user.getPassword());
 		Response response = null;
 		user.setPassword(password.encode(user.getPassword()));
 		Optional<UserModel> validate = repository.findByMail(user.getMail());
@@ -59,10 +60,10 @@ public class UserServiceImplementation implements UserService {
 
 	@Override
 	public ResponseWithToken loginUser(UserLoginDto log) {
-
-		Optional<UserModel> validate = null;
+        System.out.println("object" + log);
+		Optional<UserModel> validate =  repository.findByMail(log.getMail());
 		ResponseWithToken response = null;
-		validate = repository.findByMail(log.getMail());
+		
 
 		if (validate.isPresent()) {
 			if (password.matches(log.getPassword(), validate.get().getPassword())) {

@@ -8,8 +8,8 @@ public class InternalException extends RuntimeException{
 	
 	private int statusCode;
 	
-	public InternalException(String message , int errorCode) {
-		super(message);
+	public InternalException(String statusMessage , int errorCode) {
+		super(statusMessage);
 		this.statusCode=errorCode;
 	}
 

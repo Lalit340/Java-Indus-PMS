@@ -12,11 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ProjectDto {
 	
-	@NotNull(message = "Enter project Name")
-	@NotBlank
+
 	private String name;
 	
-	@NotNull(message = "Enter project Desciption")
 	private String description;
 
 }

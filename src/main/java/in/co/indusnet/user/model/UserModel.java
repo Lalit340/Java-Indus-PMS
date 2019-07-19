@@ -30,12 +30,10 @@ public class UserModel {
 	
 	@Column(name = "Email")
 	@NotNull(message = "please provide a valid email")
-	@Email(regexp = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.(?:[A-Z]{2,}|com|org))+$")
 	private String mail;
 	
 	@Column(name = "MobNumber")
-	@NotNull(message = "please provide a valid number")
-	@Pattern(regexp = "[0-9]{10}" , message = "provide valid mobile number")
+	@NotNull(message = "please provide a  number")
 	private String mobileNo;
 
 	@Column(name = "Password")

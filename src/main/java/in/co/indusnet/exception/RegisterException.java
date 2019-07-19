@@ -8,8 +8,8 @@ public class RegisterException extends RuntimeException{
 	
 	private int statusCode;
 	
-	public RegisterException(String message , int errorCode) {
-		super(message);
+	public RegisterException(String statusMessage , int errorCode) {
+		super(statusMessage);
 		this.statusCode=errorCode;
 	}
 

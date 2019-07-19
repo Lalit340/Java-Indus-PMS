@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ import in.co.indusnet.user.service.UserService;
 
 @RestController
 @RequestMapping("/indusnet")
+@CrossOrigin(allowedHeaders = "*",origins = "*")
 public class MainController {
 
 	@Autowired
@@ -48,6 +50,7 @@ public class MainController {
 
 	@PutMapping("/resetpassword")
 	public ResponseEntity<Response> reset(@Valid @RequestBody UserPassword password, @RequestHeader String token) {
+		System.out.println("user token :"+token);
 		Response response = service.resetPassword(password, token);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}

@@ -5,26 +5,26 @@ import in.co.indusnet.response.ResponseWithToken;
 
 public class ResponseHelper {
 	
-	public static Response responseSender(String message , int statusCode) {
+	public static Response responseSender(String statusMessage , int statusCode) {
 		Response response = new Response();
 		response.setStatusCode(statusCode);
-		response.setStatusMessage(message);
+		response.setStatusMessage(statusMessage);
 		return response;
 	}
 	
-	public static ResponseWithToken responseTokenSender(String message , int statusCode,String token ,String username) {
+	public static ResponseWithToken responseTokenSender(String statusMessage , int statusCode,String token ,String username) {
 		ResponseWithToken response = new ResponseWithToken();
 		response.setStatusCode(statusCode);
-		response.setMessage(message);
+		response.setStatusMessage(statusMessage);
 		response.setToken(token);
 		response.setUsername(username);
 		return response;
 	}
 	
-	public static ResponseWithToken response(String message , int statusCode) {
+	public static ResponseWithToken response(String statusMessage , int statusCode) {
 		ResponseWithToken response = new ResponseWithToken();
 		response.setStatusCode(statusCode);
-		response.setMessage(message);
+		response.setStatusMessage(statusMessage);
 		return response;
 	}
 

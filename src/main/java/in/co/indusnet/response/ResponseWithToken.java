@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class ResponseWithToken {
 	
-	private String message;
+	private String statusMessage;
 	
 	private int statusCode;
 	
