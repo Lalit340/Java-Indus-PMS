@@ -10,18 +10,19 @@ import in.co.indusnet.response.Response;
 
 @Service
 public interface ProjectService {
-	
-	public Response asignProj(ProjectDto dto);
 
-	public List<ProjectModel> getData( );
+	public Response createProject(ProjectDto dto);
+	
+	public List<ProjectModel> getProject();
+
+	public Response assignProject(int pid ,int eid);
+
+	public List<ProjectModel> findUserProject(String mail);
+	
+	public Response update(ProjectDto dto, int id);
 	
 	public Response delete(int id);
 	
-	public Response update(ProjectDto dto ,int id);
-	
-	public Response add(int pid ,int eid);
-
 	public Response remove(int pid, int eid);
 
-	
 }

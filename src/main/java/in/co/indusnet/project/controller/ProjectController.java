@@ -20,29 +20,49 @@ import org.springframework.web.bind.annotation.RestController;
 
 import in.co.indusnet.project.dto.ProjectDto;
 import in.co.indusnet.project.model.ProjectModel;
-import in.co.indusnet.project.service.ProjectServiceImplementation;
+import in.co.indusnet.project.service.ProjectService;
 import in.co.indusnet.response.Response;
 
 @RestController
 @RequestMapping("/indusnet")
 @CrossOrigin(allowedHeaders = "*",origins = "*")
 public class ProjectController {
-
+	
 	@Autowired
-	private ProjectServiceImplementation service;
+	private ProjectService service;
+	
+	@PostMapping("/createProject")
+	public ResponseEntity<Response> create(@Valid @RequestBody ProjectDto dto){
+		 Response response=  service.createProject(dto);
+		return new ResponseEntity<Response>(response , HttpStatus.OK);
+	}
 
-	@PostMapping("/create")
-	public ResponseEntity<Response> create(@Valid @RequestBody ProjectDto dto) {
-		Response response = service.asignProj(dto);
+	@GetMapping("/getAllProjects")
+	public List<ProjectModel> getProjects(){
+		List<ProjectModel> model = service.getProject();
+		return model;
+	}
+	
+	@PutMapping("/assignProject")
+	public ResponseEntity<Response> assign(@RequestParam int pid ,@RequestParam int eid){
+		Response response = service.assignProject(pid, eid);
+		return new ResponseEntity<Response>(response ,HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/getProject")
+	public List<ProjectModel> getUserProjects(@RequestParam String mail){
+		List<ProjectModel> projects = service.findUserProject(mail);
+		return projects;
+	}
+	
+	@PutMapping("/updateProj/{id}")
+	public ResponseEntity<Response> updateProject(@Valid @RequestBody ProjectDto dto, @PathVariable int id) {
+		Response response = service.update(dto, id);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
-	}
 
-	@GetMapping("/getallprojs")
-	public List<ProjectModel> getProj() {
-		List<ProjectModel> data = service.getData();
-		return data;
 	}
-
+	
 	@DeleteMapping("/deleteProj/{id}")
 	public ResponseEntity<Response> deleteProject(@PathVariable int id) {
 		Response response = service.delete(id);
@@ -53,20 +73,6 @@ public class ProjectController {
 	@DeleteMapping("/removeProj")
 	public ResponseEntity<Response> removeProject(@RequestParam int pid ,@RequestParam int eid) {
 		Response response = service.remove(pid , eid);
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
-
-	}
-
-
-	@PutMapping("/updateProj/{id}")
-	public ResponseEntity<Response> updateProject(@Valid @RequestBody ProjectDto dto, @PathVariable int id) {
-		Response response = service.update(dto, id);
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
-
-	}
-	@PutMapping("/asignProj")
-	public ResponseEntity<Response> addProject( @RequestParam int pid , @RequestParam int eid) {
-		Response response = service.add(pid, eid);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}

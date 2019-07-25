@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import in.co.indusnet.exception.InternalException;
 import in.co.indusnet.exception.LoginException;
 import in.co.indusnet.exception.PasswordException;
 import in.co.indusnet.exception.RegisterException;
@@ -29,6 +30,13 @@ public class ExceptionHandler {
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler(value = PasswordException.class)
 	public ResponseEntity<Response> passwordResponse( PasswordException re){
+		    Response response= ResponseHelper.responseSender(re.getMessage(), re.getStatusCode()) ;
+		return new ResponseEntity<Response>(response ,HttpStatus.OK);
+		
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = InternalException.class)
+	public ResponseEntity<Response> internalResponse( InternalException re){
 		    Response response= ResponseHelper.responseSender(re.getMessage(), re.getStatusCode()) ;
 		return new ResponseEntity<Response>(response ,HttpStatus.OK);
 		

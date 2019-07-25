@@ -18,51 +18,86 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.co.indusnet.project.dto.ProjectDto;
-import in.co.indusnet.project.model.ProjectModel;
-import in.co.indusnet.project.service.ProjectServiceImplementation;
 import in.co.indusnet.response.Response;
 import in.co.indusnet.task.dto.TaskDto;
 import in.co.indusnet.task.model.TaskModel;
-import in.co.indusnet.task.service.TaskServiceImplementation;
+import in.co.indusnet.task.service.TaskService;
 
 @RestController
 @RequestMapping("/indusnet")
 @CrossOrigin(allowedHeaders = "*",origins = "*")
 public class TaskController {
-
+	
 	@Autowired
-	private TaskServiceImplementation service;
+	private TaskService taskService;
+	
+	
 
 	@PostMapping("/createtask")
 	public ResponseEntity<Response> create(@Valid @RequestBody TaskDto dto) {
-		Response response = service.asignTask(dto);
+		Response response = taskService.createTask(dto);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-
+	
+	
 	@GetMapping("/getalltasks")
 	public List<TaskModel> getTask() {
-		List<TaskModel> data = service.getData();
+		List<TaskModel> data = taskService.getData();
 		return data;
+	}
+	
+	@PutMapping("/asigntask")
+	public ResponseEntity<Response> addTask( @RequestParam int pid , @RequestParam int tid) {
+		Response response = taskService.asignTask(pid, tid);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+	}
+	
+	@PutMapping("/asigntaskToUser")
+	public ResponseEntity<Response> addTaskToUser( @RequestParam int eid , @RequestParam int tid) {
+		Response response = taskService.asignTaskUser(eid, tid);
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+
+	}
+	
+	
+	@GetMapping("/getProjectTask")
+	public List<TaskModel> getProjectTask(@RequestParam int pid){
+		List<TaskModel> model =taskService.getListTask(pid);
+		return model;
+	}
+
+	@GetMapping("/getUserTask")
+	public List<TaskModel> getUserTask(@RequestParam String mail){
+		List<TaskModel> model =taskService.getTask(mail);
+		return model;
+	}
+	
+	@PutMapping("/changeStatus")
+	public ResponseEntity<Response> changeStatus(@RequestParam int tid){
+		Response response = taskService.changeStatus(tid);
+		return  new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/deletetask/{id}")
 	public ResponseEntity<Response> deleteTask(@PathVariable int id) {
-		Response response = service.delete(id);
+		Response response = taskService.delete(id);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-
+	
 	@PutMapping("/updatetask/{id}")
 	public ResponseEntity<Response> updateTask(@Valid @RequestBody TaskDto dto, @PathVariable int id) {
-		Response response = service.update(dto, id);
+		Response response = taskService.update(dto, id);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
-	@PutMapping("/asigntask")
-	public ResponseEntity<Response> addTask( @RequestParam int pid , @RequestParam int tid) {
-		Response response = service.add(pid, tid);
+	
+	@DeleteMapping("/removeTaskfromProj")
+	public ResponseEntity<Response> removeProject(@RequestParam int pid ,@RequestParam int tid) {
+		Response response = taskService.remove(pid , tid);
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 
 	}
+
 }

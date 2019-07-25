@@ -1,37 +1,51 @@
 package in.co.indusnet.user.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import in.co.indusnet.project.model.ProjectModel;
+import in.co.indusnet.task.model.TaskModel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "indus")
+@Setter
+@Getter
+@AllArgsConstructor
 public class UserModel {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "EID")
-	private int  id;
-	
+	private int id;
+
 	@Column(name = "Ename")
 	@NotNull
-	private String  name;
-	
+	private String name;
+
 	@Column(name = "Designation")
 	@NotNull
 	private String desg;
-	
+
 	@Column(name = "Email")
 	@NotNull(message = "please provide a valid email")
 	private String mail;
-	
+
 	@Column(name = "MobNumber")
 	@NotNull(message = "please provide a  number")
 	private String mobileNo;
@@ -40,84 +54,19 @@ public class UserModel {
 	@NotNull(message = "please provide a valid password")
 	private String password;
 
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "indus_project",joinColumns = {@JoinColumn(name ="EID") },inverseJoinColumns = {@JoinColumn(name ="PID")})
+	@JsonIgnore
+	private List<ProjectModel> projectModel;
 	
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "indus_task",joinColumns = {@JoinColumn(name="EID")},inverseJoinColumns = {@JoinColumn(name ="TID")})
+	@JsonIgnore
+	private List<TaskModel> task;
+
 	public UserModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
-
-	
-	public UserModel(int id, @NotNull String name, @NotNull String desg, @NotNull String mail, @NotNull String mobileNo,
-			@NotNull String password) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.desg = desg;
-		this.mail = mail;
-		this.mobileNo = mobileNo;
-		this.password = password;
-	}
-
-
-	public int getId() {
-		return id;
-	}
-
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-	public String getDesg() {
-		return desg;
-	}
-
-
-	public void setDesg(String desg) {
-		this.desg = desg;
-	}
-
-
-	public String getMail() {
-		return mail;
-	}
-
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
-
-	public String getMobileNo() {
-		return mobileNo;
-	}
-
-
-	public void setMobileNo(String mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-
-
-	public String getPassword() {
-		return password;
-	}
-
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 
 }

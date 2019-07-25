@@ -28,5 +28,8 @@ public interface UserService {
 	public Response delete(int id);
 
 	public Response update(UserUpdateDto dto, int id);
+	
+//	public List<ProjectModel> findOne(int eid);
+
 
 }

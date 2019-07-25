@@ -6,13 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Component
-@Setter
 @Getter
+@Setter
 public class Response {
 
-	private String statusMessage;
+private String statusMessage;
 	
 	private int statusCode;
-
-
 }

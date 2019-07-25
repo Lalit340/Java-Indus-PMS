@@ -30,6 +30,8 @@ public class UserServiceImplementation implements UserService {
 	@Autowired
 	private UserRepository repository;
 
+
+	
 	@Autowired
 	private PasswordEncoder password;
 
@@ -89,7 +91,7 @@ public class UserServiceImplementation implements UserService {
 				}
 
 			} else
-				throw new in.co.indusnet.exception.LoginException("Email is not valid", 401);
+				throw new in.co.indusnet.exception.LoginException("Password is not valid", 401);
 		} else {
 			throw new in.co.indusnet.exception.LoginException("Email is not exist", 402);
 		}
@@ -154,5 +156,15 @@ public class UserServiceImplementation implements UserService {
 		Response response = ResponseHelper.responseSender(" Update Successfully ", 200);
 		return response;
 	}
+
+//	@Override
+//	public List<ProjectModel> findOne(int eid) {
+//		Optional<UserModel> model = repository.findById(eid);
+//		List<ProjectModel> projModel= model.get().getProjectModel();
+//		if(projModel == null) {
+//			throw new RegisterException("no project found", 401);
+//		}
+//		return projModel;
+//	}
 
 }// class

@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.co.indusnet.project.dto.ProjectDto;
+
 import in.co.indusnet.response.Response;
 import in.co.indusnet.response.ResponseWithToken;
 import in.co.indusnet.user.dto.UserLoginDto;
@@ -35,6 +36,8 @@ public class MainController {
 
 	@Autowired
 	private UserService service;
+	
+	
 
 	@PostMapping("/register")
 	public ResponseEntity<Response> register(@Valid @RequestBody UserRegisterDto usr) {
@@ -55,6 +58,11 @@ public class MainController {
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 
+//	@GetMapping("/oneUser")
+//	public List<ProjectModel> getById(@RequestParam int eid){
+//		List<ProjectModel> model = service.findOne(eid)	;
+//		return model;
+//	}
 	@GetMapping("/usersinfo")
 	public List<UserModel> find() {
 		List<UserModel> model = service.findAll();
