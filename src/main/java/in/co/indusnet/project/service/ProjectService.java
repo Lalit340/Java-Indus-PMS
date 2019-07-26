@@ -25,4 +25,6 @@ public interface ProjectService {
 	
 	public Response remove(int pid, int eid);
 
+	public ProjectModel findProject(int pid);
+
 }

@@ -43,6 +43,12 @@ public class ProjectController {
 		return model;
 	}
 	
+	@GetMapping("/getOneProjects")
+	public ProjectModel getOneProjects(@RequestParam int pid){
+		ProjectModel model = service.findProject(pid);
+		return model;
+	}
+	
 	@PutMapping("/assignProject")
 	public ResponseEntity<Response> assign(@RequestParam int pid ,@RequestParam int eid){
 		Response response = service.assignProject(pid, eid);

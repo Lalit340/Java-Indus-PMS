@@ -134,4 +134,15 @@ public class ProjectServiceImplementation implements ProjectService {
 		}
 	}
 
+	@Override
+	public ProjectModel findProject(int pid) {
+		Optional<ProjectModel> model =projRepository.findById(pid);
+		if(model.isPresent()) {
+			return model.get();
+		}else
+			throw new InternalException("No project are present ", 402);
+
+			
+	}
+
 }
